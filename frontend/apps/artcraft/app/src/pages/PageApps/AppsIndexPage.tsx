@@ -107,7 +107,7 @@ function AppCard({ app }: { app: FullAppItem }) {
             </div>
             {enabled && (
               <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-[3px] border border-white/15 text-white/40 transition-colors duration-150 group-hover:border-white/40 group-hover:text-white">
-                <ArrowRightIcon className="text-xs rtl:-scale-x-100" />
+                <ArrowRightIcon className="text-xs" />
               </span>
             )}
           </div>

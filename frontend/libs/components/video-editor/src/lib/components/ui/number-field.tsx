@@ -272,8 +272,8 @@ function NumberField({
       <span
         className={cn(
           "relative flex flex-1 min-w-0 items-center",
-          icon ? "px-1.5" : "pl-2.5",
-          onReset ? "pr-0" : "pr-2.5",
+          icon ? "px-1.5" : "ps-2.5",
+          onReset ? "pe-0" : "pe-2.5",
         )}
       >
         {inputNode}
@@ -300,7 +300,7 @@ function NumberField({
         )}
       </span>
       {onReset && !isDefault && (
-        <div className="shrink-0 pr-2 flex items-center">
+        <div className="shrink-0 pe-2 flex items-center">
           <Button
             variant="text"
             size="text"

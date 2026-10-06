@@ -12,6 +12,7 @@ import {
   type TranslationKey,
 } from "./locales/en";
 import { he } from "./locales/he";
+import { applyDomTranslation } from "./dom-translator";
 
 const LANGUAGE_STORAGE_KEY = "st-language";
 
@@ -96,4 +97,5 @@ function applyDocumentLanguage(language: Language) {
   const root = document.documentElement;
   root.lang = language;
   root.dir = getLanguageDirection(language);
+  applyDomTranslation(language);
 }

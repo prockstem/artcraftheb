@@ -876,3 +876,19 @@ html[lang="he"] body .hud-label {
   font-family: "Rubik", "Assistant", "Segoe UI", "Arial Hebrew", Arial,
     sans-serif;
 }
+
+/* Directional icons point the other way in right-to-left layouts. :dir()
+   follows the nearest dir attribute, so areas pinned to LTR (the video
+   editor timeline) keep their arrows as-is. */
+:dir(rtl) :is(
+    .lucide-arrow-right,
+    .lucide-arrow-left,
+    .lucide-chevron-right,
+    .lucide-chevron-left,
+    .lucide-chevrons-right,
+    .lucide-chevrons-left,
+    .lucide-arrow-right-to-line,
+    .lucide-arrow-left-to-line
+  ) {
+  transform: scaleX(-1);
+}

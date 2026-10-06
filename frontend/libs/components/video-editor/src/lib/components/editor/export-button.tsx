@@ -243,7 +243,7 @@ function ExportPopover({
   };
 
   return (
-    <PopoverContent className="bg-ui-controls mr-4 flex w-80 flex-col p-0">
+    <PopoverContent className="bg-ui-controls me-4 flex w-80 flex-col p-0">
       {exportResult && !exportResult.success ? (
         <ExportError
           error={exportResult.error || "Unknown error occurred"}
@@ -515,7 +515,7 @@ function DestinationRow({
         </span>
       </div>
       {status === "error" && error && (
-        <p className="text-destructive ml-6 text-[11px]">{error}</p>
+        <p className="text-destructive ms-6 text-[11px]">{error}</p>
       )}
     </div>
   );

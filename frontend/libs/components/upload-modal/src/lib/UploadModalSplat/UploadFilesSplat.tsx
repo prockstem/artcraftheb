@@ -402,13 +402,13 @@ export const UploadFilesSplat = ({
                 ref={canvasCallbackRef}
               />
               {!currentFile && (
-                <h6 className="pointer-events-auto absolute left-0 top-1/2 -mt-5 flex w-full items-center justify-center gap-2.5 text-center opacity-50">
+                <h6 className="pointer-events-auto absolute start-0 top-1/2 -mt-5 flex w-full items-center justify-center gap-2.5 text-center opacity-50">
                   <BoxIcon />
                   Your model preview will appear here
                 </h6>
               )}
               {previewStatus.type.includes("Error") && (
-                <h6 className="pointer-events-auto absolute left-0 top-1/2 -mt-5 w-full text-center">
+                <h6 className="pointer-events-auto absolute start-0 top-1/2 -mt-5 w-full text-center">
                   {previewStatus.type}
                   {previewStatus.message && <br />}
                   {previewStatus.message}
@@ -448,13 +448,13 @@ export const UploadFilesSplat = ({
             ref={canvasCallbackRef}
           />
           {!currentFile && (
-            <h6 className="pointer-events-auto absolute left-0 top-1/2 -mt-5 flex w-full items-center justify-center gap-2.5 text-center opacity-50">
+            <h6 className="pointer-events-auto absolute start-0 top-1/2 -mt-5 flex w-full items-center justify-center gap-2.5 text-center opacity-50">
               <BoxIcon />
               Your model preview will appear here
             </h6>
           )}
           {previewStatus.type.includes("Error") && (
-            <h6 className="pointer-events-auto absolute left-0 top-1/2 -mt-5 w-full text-center">
+            <h6 className="pointer-events-auto absolute start-0 top-1/2 -mt-5 w-full text-center">
               {previewStatus.type}
               {previewStatus.message && <br />}
               {previewStatus.message}

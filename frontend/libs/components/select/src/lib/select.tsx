@@ -45,7 +45,7 @@ export const Select = ({
               >
                 {selectedOption.label}
               </span>
-              <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2.5">
+              <span className="pointer-events-none absolute inset-y-0 end-0 flex items-center pe-2.5">
                 <ChevronDownIcon aria-hidden="true" />
               </span>
             </ListboxButton>
@@ -63,7 +63,7 @@ export const Select = ({
                     key={itemIdx}
                     className={({ focus, selected }) =>
                       twMerge(
-                        "relative cursor-pointer select-none py-2 pl-7 pr-2 transition-colors duration-150 ease-in-out",
+                        "relative cursor-pointer select-none py-2 ps-7 pe-2 transition-colors duration-150 ease-in-out",
                         !selected ? "text-base-fg/90" : "text-base-fg",
                         selected && "bg-white/10",
                         focus && "bg-white text-black",
@@ -81,7 +81,7 @@ export const Select = ({
                           {option.label}
                         </span>
                         {selected ? (
-                          <span className="absolute inset-y-0 left-0 flex items-center pl-2.5">
+                          <span className="absolute inset-y-0 start-0 flex items-center ps-2.5">
                             <CheckIcon aria-hidden="true" className="text-xs" />
                           </span>
                         ) : null}

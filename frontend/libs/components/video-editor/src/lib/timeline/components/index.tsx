@@ -435,7 +435,13 @@ export function Timeline() {
         setZoomLevel={({ zoom }) => setZoomLevel(zoom)}
       />
 
-      <div className="relative flex flex-1 overflow-hidden" ref={timelineRef}>
+      {/* Time always runs left to right, even in right-to-left languages;
+          clip positions are computed in physical pixels. */}
+      <div
+        className="relative flex flex-1 overflow-hidden"
+        dir="ltr"
+        ref={timelineRef}
+      >
         <TrackLabelsPanel
           trackLabelsRef={trackLabelsRef}
           trackLabelsScrollRef={trackLabelsScrollRef}

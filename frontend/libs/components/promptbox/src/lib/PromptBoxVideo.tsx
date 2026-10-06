@@ -1380,7 +1380,7 @@ export const PromptBoxVideo = ({
                       ? "Use @Image1, @Video1, @Audio1... to reference uploads in prompt..."
                       : "Describe what you want to happen in the video..."
                   }
-                  className="promptbox-scrollbar text-md relative min-h-[2.5em] w-full resize-y overflow-y-auto bg-transparent pr-8 text-base-fg"
+                  className="promptbox-scrollbar text-md relative min-h-[2.5em] w-full resize-y overflow-y-auto bg-transparent pe-8 text-base-fg"
                   onKeyDown={(e) => {
                     if (e.key !== "Enter") return;
                     const isSubmitCombo = enterToGenerate && !e.shiftKey;
@@ -1403,7 +1403,7 @@ export const PromptBoxVideo = ({
                   ref={textareaRef}
                   rows={1}
                   placeholder="Describe what you want to happen in the video..."
-                  className="promptbox-scrollbar text-md relative min-h-[2.5em] w-full resize-y overflow-y-auto bg-transparent pr-8 text-base-fg placeholder-base-fg/60 focus:outline-none"
+                  className="promptbox-scrollbar text-md relative min-h-[2.5em] w-full resize-y overflow-y-auto bg-transparent pe-8 text-base-fg placeholder-base-fg/60 focus:outline-none"
                   value={prompt}
                   onChange={handleChange}
                   onPaste={handlePaste}
@@ -1414,7 +1414,7 @@ export const PromptBoxVideo = ({
               )}
               <PromptFullscreenButton onClick={openFullscreen} />
               <span
-                className={`pointer-events-none absolute -bottom-1 right-4 text-[10px] tabular-nums ${isFinite(maxLen) && prompt.length > maxLen ? "text-red-500" : "text-base-fg/40"}`}
+                className={`pointer-events-none absolute -bottom-1 end-4 text-[10px] tabular-nums ${isFinite(maxLen) && prompt.length > maxLen ? "text-red-500" : "text-base-fg/40"}`}
               >
                 {prompt.length} / {isFinite(maxLen) ? maxLen : "∞"}
               </span>
