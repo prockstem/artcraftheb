@@ -57,6 +57,7 @@ import { useTextToImageStore } from "./PageImage/TextToImageStore";
 
 import { AppsIndexPage } from "./PageApps/AppsIndexPage";
 import PageDraw from "./PageDraw/PageDraw";
+import { useTranslation } from "@storyteller/common";
 import {
   topNavMediaId,
   topNavMediaUrl,
@@ -112,6 +113,7 @@ interface Props {
 
 export const MainApp = ({ sceneToken }: Props) => {
   useSignals();
+  const { t } = useTranslation();
 
   // Background plumbing — should keep running regardless of which tab
   // is active.
@@ -174,7 +176,7 @@ export const MainApp = ({ sceneToken }: Props) => {
           console.log("PRESSED");
           triggerRecheck();
         }}
-        pageName="Edit Scene"
+        pageName={t("crumb.editScene")}
       />
       <LoginModal
         videoSrc2D="/resources/videos/artcraft-canvas-demo.mp4"

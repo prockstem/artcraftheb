@@ -1,10 +1,12 @@
 import { ArrowRightIcon } from "lucide-react";
 import { DynamicIcon } from "@storyteller/icons";
 import { twMerge } from "tailwind-merge";
+import { useTranslation } from "@storyteller/common";
 import {
   useGenerateApps,
   useEditApps,
   getAppCardPalette,
+  getBadgeLabel,
   getBadgeStyles,
   goToApp,
   type FullAppItem,
@@ -13,9 +15,10 @@ import {
 export const AppsIndexPage = () => {
   const generateApps = useGenerateApps();
   const editApps = useEditApps();
+  const { t } = useTranslation();
   const categories = [
-    { title: "Create", apps: generateApps },
-    { title: "Edit", apps: editApps },
+    { title: t("apps.category.create"), apps: generateApps },
+    { title: t("apps.category.edit"), apps: editApps },
   ];
 
   return (
@@ -25,13 +28,15 @@ export const AppsIndexPage = () => {
     <div className="fixed inset-0 overflow-y-auto bg-ui-background pt-[56px] text-base-fg">
       <main className="mx-auto w-full max-w-6xl px-5 pb-20 pt-8 sm:px-8 sm:pt-12">
         <p className="hud-label mb-4 text-ui-accent-ink">
-          Your creative workspace
+          {t("apps.eyebrow")}
         </p>
         <h1 className="max-w-3xl font-display text-3xl leading-tight tracking-tight sm:text-5xl">
-          What will you <span className="text-ui-accent-ink">craft</span> today?
+          {t("apps.headingBefore")}
+          <span className="text-ui-accent-ink">{t("apps.headingCraft")}</span>
+          {t("apps.headingAfter")}
         </h1>
         <p className="mt-4 max-w-xl text-sm leading-relaxed text-base-fg/70 sm:text-base">
-          Start with an idea. Choose a tool to bring it to life.
+          {t("apps.subheading")}
         </p>
 
         {categories.map((category, index) => (
@@ -58,6 +63,7 @@ export const AppsIndexPage = () => {
 };
 
 function AppCard({ app }: { app: FullAppItem }) {
+  const { t } = useTranslation();
   const palette = getAppCardPalette(app.id);
   const enabled = !!app.action;
 
@@ -66,7 +72,7 @@ function AppCard({ app }: { app: FullAppItem }) {
       onClick={() => goToApp(app.action)}
       disabled={!enabled}
       className={twMerge(
-        "group relative flex h-full rounded-[3px] border border-ui-border bg-white/5 p-5 text-left transition-colors duration-150 focus-visible:border-primary",
+        "group relative flex h-full rounded-[3px] border border-ui-border bg-white/5 p-5 text-start transition-colors duration-150 focus-visible:border-primary",
         enabled ? twMerge("cursor-pointer", palette.hoverStyle) : "cursor-default opacity-60",
       )}
     >
@@ -95,13 +101,13 @@ function AppCard({ app }: { app: FullAppItem }) {
                       : "border-primary/30 text-ui-accent-ink",
                   )}
                 >
-                  {app.badge}
+                  {getBadgeLabel(t, app.badge)}
                 </span>
               )}
             </div>
             {enabled && (
               <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-[3px] border border-white/15 text-white/40 transition-colors duration-150 group-hover:border-white/40 group-hover:text-white">
-                <ArrowRightIcon className="text-xs" />
+                <ArrowRightIcon className="text-xs rtl:-scale-x-100" />
               </span>
             )}
           </div>

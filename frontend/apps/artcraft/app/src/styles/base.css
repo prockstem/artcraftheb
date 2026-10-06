@@ -861,3 +861,18 @@ img {
     margin-inline: 32px;
   }
 }
+
+/* Hebrew (set on <html lang> by the i18n module). Hebrew script has no case
+   and reads poorly when letter-spaced, so drop the tracking the HUD labels use
+   for Latin uppercase, and prefer system fonts that ship Hebrew glyphs. The
+   monospace HUD font has no Hebrew, so its wide spaces would split words. */
+html[lang="he"] body * {
+  letter-spacing: normal !important;
+}
+
+html[lang="he"] body,
+html[lang="he"] body .font-mono,
+html[lang="he"] body .hud-label {
+  font-family: "Rubik", "Assistant", "Segoe UI", "Arial Hebrew", Arial,
+    sans-serif;
+}

@@ -3,6 +3,7 @@ import { Input } from "@storyteller/ui-input";
 import { Button } from "@storyteller/ui-button";
 import { EyeIcon, EyeOffIcon, LoaderCircleIcon, TriangleAlertIcon } from "lucide-react";
 import { DynamicIcon } from "@storyteller/icons";
+import { useTranslation } from "@storyteller/common";
 
 interface ArtCraftSignUpProps {
   onSubmit: (
@@ -31,6 +32,7 @@ export const ArtCraftSignUp = ({
   errorMessage,
   isLoading = false,
 }: ArtCraftSignUpProps) => {
+  const { t } = useTranslation();
   const [localError, setLocalError] = useState<string | undefined>(undefined);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
@@ -59,7 +61,7 @@ export const ArtCraftSignUp = ({
         form.elements.namedItem("confirmPassword") as HTMLInputElement
       ).value;
       if (password !== confirmPassword) {
-        setLocalError("Passwords do not match.");
+        setLocalError(t("login.form.passwordsDoNotMatch"));
         return;
       }
       onSubmit(username, email, password, confirmPassword);
@@ -89,21 +91,21 @@ export const ArtCraftSignUp = ({
       {isSignUp ? (
         <>
           <div className="space-y-2">
-            <label className={FIELD_LABEL}>Username</label>
+            <label className={FIELD_LABEL}>{t("login.form.username")}</label>
             <Input
               name="username"
-              placeholder="Username"
+              placeholder={t("login.form.username")}
               required
               autoComplete="off"
               inputClassName={FIELD_INPUT}
             />
           </div>
           <div className="space-y-2">
-            <label className={FIELD_LABEL}>Email</label>
+            <label className={FIELD_LABEL}>{t("login.form.email")}</label>
             <Input
               name="email"
               type="email"
-              placeholder="you@example.com"
+              placeholder={t("login.form.emailPlaceholder")}
               required
               autoComplete="off"
               inputClassName={FIELD_INPUT}
@@ -112,10 +114,10 @@ export const ArtCraftSignUp = ({
         </>
       ) : (
         <div className="space-y-2">
-          <label className={FIELD_LABEL}>Email or Username</label>
+          <label className={FIELD_LABEL}>{t("login.form.emailOrUsername")}</label>
           <Input
             name="usernameOrEmail"
-            placeholder="you@example.com or username"
+            placeholder={t("login.form.emailOrUsernamePlaceholder")}
             required
             autoComplete="off"
             inputClassName={FIELD_INPUT}
@@ -124,20 +126,20 @@ export const ArtCraftSignUp = ({
       )}
 
       <div className="space-y-2">
-        <label className={FIELD_LABEL}>Password</label>
+        <label className={FIELD_LABEL}>{t("login.form.password")}</label>
         <div className="relative">
           <Input
             name="password"
             type={showPassword ? "text" : "password"}
-            placeholder="Min. 8 characters"
+            placeholder={t("login.form.passwordPlaceholder")}
             required
             autoComplete="off"
-            inputClassName={`${FIELD_INPUT} pr-12`}
+            inputClassName={`${FIELD_INPUT} pe-12`}
           />
           <button
             type="button"
             onClick={() => setShowPassword((v) => !v)}
-            className="absolute right-4 top-1/2 -translate-y-1/2 text-white/30 transition-colors hover:text-white/60"
+            className="absolute end-4 top-1/2 -translate-y-1/2 text-white/30 transition-colors hover:text-white/60"
             tabIndex={-1}
           >
             <DynamicIcon icon={showPassword ? EyeOffIcon : EyeIcon} />
@@ -147,20 +149,20 @@ export const ArtCraftSignUp = ({
 
       {isSignUp && (
         <div className="space-y-2">
-          <label className={FIELD_LABEL}>Confirm Password</label>
+          <label className={FIELD_LABEL}>{t("login.form.confirmPassword")}</label>
           <div className="relative">
             <Input
               name="confirmPassword"
               type={showConfirm ? "text" : "password"}
-              placeholder="Re-enter password"
+              placeholder={t("login.form.confirmPasswordPlaceholder")}
               required
               autoComplete="off"
-              inputClassName={`${FIELD_INPUT} pr-12`}
+              inputClassName={`${FIELD_INPUT} pe-12`}
             />
             <button
               type="button"
               onClick={() => setShowConfirm((v) => !v)}
-              className="absolute right-4 top-1/2 -translate-y-1/2 text-white/30 transition-colors hover:text-white/60"
+              className="absolute end-4 top-1/2 -translate-y-1/2 text-white/30 transition-colors hover:text-white/60"
               tabIndex={-1}
             >
               <DynamicIcon icon={showConfirm ? EyeOffIcon : EyeIcon} />
@@ -178,21 +180,21 @@ export const ArtCraftSignUp = ({
           {isLoading ? (
             <LoaderCircleIcon className="animate-spin" />
           ) : isSignUp ? (
-            "Sign up"
+            t("login.form.signUp")
           ) : (
-            "Log in"
+            t("login.form.logIn")
           )}
         </Button>
       </div>
 
       <div className="mt-4 text-center text-sm text-white/60">
-        {isSignUp ? "Already have an account?" : "Don't have an account?"}{" "}
+        {isSignUp ? t("login.form.haveAccount") : t("login.form.noAccount")}{" "}
         <button
           type="button"
           onClick={onToggleMode}
           className="font-semibold text-primary transition-colors hover:text-primary-400"
         >
-          {isSignUp ? "Log in" : "Sign up"}
+          {isSignUp ? t("login.form.logIn") : t("login.form.signUp")}
         </button>
       </div>
     </form>

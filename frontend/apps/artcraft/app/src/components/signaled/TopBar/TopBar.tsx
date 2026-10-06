@@ -41,8 +41,13 @@ import {
 } from "@storyteller/ui-generation-list";
 import { SettingsModal } from "@storyteller/ui-settings-modal";
 import { Tooltip } from "@storyteller/ui-tooltip";
-import { Fragment, useEffect, useRef, useState } from "react";
-import { APP_DESCRIPTORS, goToApp } from "~/config/appMenu";
+import { Fragment, useEffect, useMemo, useRef, useState } from "react";
+import { useTranslation, type TranslateFn } from "@storyteller/common";
+import {
+  goToApp,
+  useLocalizedAppDescriptors,
+  type AppDescriptor,
+} from "~/config/appMenu";
 import {
   applyMakeVideoFromImage,
   applyRecreateFromPromptData,
@@ -87,18 +92,21 @@ const CREDITS_POLL_INTERVAL = 60_000; // milliseconds
 
 // NB: See `TabState` for the default tab. The Apps ("More") entry is first so
 // it's the landing tab and leftmost in the switcher.
-const appMenuTabs: MenuIconItem[] = [
+const buildAppMenuTabs = (
+  t: TranslateFn,
+  appDescriptors: AppDescriptor[],
+): MenuIconItem[] => [
   {
     id: "APPS",
-    label: "Home",
+    label: t("topbar.home"),
     icon: <HouseIcon />,
-    description: "Explore all apps and miniapps",
+    description: t("topbar.homeDescription"),
     large: true,
     tooltipContent: <AppsQuickMenu />,
     tooltipInteractive: true,
     tooltipPosition: "bottom",
   },
-  ...APP_DESCRIPTORS.map((d) => ({
+  ...appDescriptors.map((d) => ({
     id: d.id,
     label: d.label,
     icon: <DynamicIcon icon={d.icon} />,
@@ -116,6 +124,7 @@ const CreditsCoinWithStatus = ({
 }: {
   iconStatus: CreditsIconStatus;
 }) => {
+  const { t } = useTranslation();
   const showBadge = iconStatus !== "hidden";
 
   const badgeColorClass =
@@ -129,10 +138,10 @@ const CreditsCoinWithStatus = ({
 
   const tooltipMessage =
     iconStatus === "failed"
-      ? "Couldn't refresh your balance."
+      ? t("topbar.credits.failed")
       : iconStatus === "recovered"
-        ? "Balance up to date."
-        : "Refreshing your balance — current amount may not be up to date.";
+        ? t("topbar.credits.recovered")
+        : t("topbar.credits.slow");
 
   const showRetry = iconStatus === "slow" || iconStatus === "failed";
 
@@ -159,7 +168,7 @@ const CreditsCoinWithStatus = ({
               className="h-7 self-start px-2 text-xs"
               onClick={handleRetry}
             >
-              Retry
+              {t("common.retry")}
             </Button>
           )}
         </div>
@@ -181,6 +190,13 @@ const CreditsCoinWithStatus = ({
 
 export const TopBar = ({ pageName }: Props) => {
   useSignals();
+
+  const { t } = useTranslation();
+  const appDescriptors = useLocalizedAppDescriptors();
+  const appMenuTabs = useMemo(
+    () => buildAppMenuTabs(t, appDescriptors),
+    [t, appDescriptors],
+  );
 
   const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
   const [settingsSection, setSettingsSection] =
@@ -349,41 +365,41 @@ export const TopBar = ({ pageName }: Props) => {
   const getPageCrumbs = (): string[] => {
     switch (tabStore.activeTabId) {
       case "2D":
-        return ["Studio", "Canvas"];
+        return [t("crumb.studio"), t("crumb.canvas")];
       case "3D":
-        return ["Studio", "3D Editor"];
+        return [t("crumb.studio"), t("crumb.3dEditor")];
       case "IMAGE":
-        return ["Create", "Image"];
+        return [t("crumb.create"), t("crumb.image")];
       case "VIDEO":
-        return ["Create", "Video"];
+        return [t("crumb.create"), t("crumb.video")];
       case "AUDIO":
-        return ["Create", "Audio"];
+        return [t("crumb.create"), t("crumb.audio")];
       case "EDIT":
-        return ["Studio", "Edit Image"];
+        return [t("crumb.studio"), t("crumb.editImage")];
       case "VIDEO_FRAME_EXTRACTOR":
-        return ["Studio", "Frame Extractor"];
+        return [t("crumb.studio"), t("crumb.frameExtractor")];
       case "VIDEO_WATERMARK_REMOVAL":
-        return ["Studio", "Video Watermark Remover"];
+        return [t("crumb.studio"), t("crumb.videoWatermarkRemover")];
       case "IMAGE_WATERMARK_REMOVAL":
-        return ["Studio", "Image Watermark Remover"];
+        return [t("crumb.studio"), t("crumb.imageWatermarkRemover")];
       case "IMAGE_TO_3D_OBJECT":
-        return ["Create", "3D Object"];
+        return [t("crumb.create"), t("crumb.3dObject")];
       case "IMAGE_TO_3D_WORLD":
-        return ["Create", "3D World"];
+        return [t("crumb.create"), t("crumb.3dWorld")];
       case "REMOVE_BACKGROUND":
-        return ["Studio", "Remove Background"];
+        return [t("crumb.studio"), t("crumb.removeBackground")];
       case "ANGLES":
-        return ["Create", "Angles"];
+        return [t("crumb.create"), t("crumb.angles")];
       case "STORYBOARD":
-        return ["Create", "Storyboard"];
+        return [t("crumb.create"), t("crumb.storyboard")];
       case "BACKGROUND_CHANGE":
-        return ["Studio", "Background Change"];
+        return [t("crumb.studio"), t("crumb.backgroundChange")];
       case "VIDEO_EDITOR":
-        return ["Studio", "Edit Video"];
+        return [t("crumb.studio"), t("crumb.editVideo")];
       case "MOODBOARD":
-        return ["Studio", "Moodboard"];
+        return [t("crumb.studio"), t("crumb.moodboard")];
       case "APPS":
-        return ["Home"];
+        return [t("crumb.home")];
       default:
         return ["ArtCraft"];
     }
@@ -432,7 +448,7 @@ export const TopBar = ({ pageName }: Props) => {
       >
         <nav
           className="mx-auto grid h-[56px] w-screen grid-cols-3 items-center justify-between ps-3"
-          aria-label="navigation"
+          aria-label={t("topbar.navigation")}
           data-tauri-drag-region
         >
           <div
@@ -505,7 +521,7 @@ export const TopBar = ({ pageName }: Props) => {
                       {i > 0 && (
                         <ChevronRightIcon
                           aria-hidden="true"
-                          className="h-3 w-3 shrink-0 text-base-fg/50"
+                          className="h-3 w-3 shrink-0 text-base-fg/50 rtl:-scale-x-100"
                           data-tauri-drag-region
                         />
                       )}
@@ -553,7 +569,7 @@ export const TopBar = ({ pageName }: Props) => {
                   <div className="w-72 p-3 text-white">
                     <div className="mb-2 flex items-center justify-between">
                       <span className="text-sm font-medium text-white/70">
-                        Your credit balance
+                        {t("topbar.creditBalance")}
                       </span>
                       <button
                         className="text-sm font-medium text-primary transition-colors hover:text-primary-300"
@@ -562,7 +578,7 @@ export const TopBar = ({ pageName }: Props) => {
                           toggleCreditsModal();
                         }}
                       >
-                        Buy credits
+                        {t("topbar.buyCredits")}
                       </button>
                     </div>
                     <div className="flex items-center gap-2 text-3xl font-semibold tracking-tight text-white">
@@ -578,7 +594,7 @@ export const TopBar = ({ pageName }: Props) => {
                       }}
                     >
                       <CalculatorIcon />
-                      Cost calculator
+                      {t("topbar.costCalculator")}
                     </button>
 
                     <div className="mt-3 flex gap-2">
@@ -590,7 +606,7 @@ export const TopBar = ({ pageName }: Props) => {
                           handleOpenBillingSettings();
                         }}
                       >
-                        See details
+                        {t("topbar.seeDetails")}
                       </Button>
                       <Button
                         variant="primary"
@@ -601,7 +617,7 @@ export const TopBar = ({ pageName }: Props) => {
                         }}
                         icon={GemIcon}
                       >
-                        Support
+                        {t("topbar.support")}
                       </Button>
                     </div>
                   </div>
@@ -615,7 +631,7 @@ export const TopBar = ({ pageName }: Props) => {
                   onClick={toggleSubscriptionModal}
                   className="h-8 px-3"
                 >
-                  Upgrade
+                  {t("topbar.upgrade")}
                 </Button>
               )}
 
@@ -624,20 +640,20 @@ export const TopBar = ({ pageName }: Props) => {
               <button
                 type="button"
                 onClick={handleOpenGalleryModal}
-                aria-label="My Library"
+                aria-label={t("topbar.myLibrary")}
                 className="flex h-8 items-center gap-1.5 rounded-[3px] border border-white/15 px-3 font-mono text-[11px] font-semibold uppercase tracking-[0.12em] text-white/80 transition-colors hover:border-white/30 hover:bg-white/10"
               >
                 <ImagesIcon className="text-[11px]" />
                 <span className="hidden whitespace-nowrap xl:block">
-                  My Library
+                  {t("topbar.myLibrary")}
                 </span>
               </button>
 
               <UploadImagesButton />
 
-              <Tooltip content="Settings" position="bottom" delay={300}>
+              <Tooltip content={t("topbar.settings")} position="bottom" delay={300}>
                 <Button
-                  aria-label="Settings"
+                  aria-label={t("topbar.settings")}
                   variant="secondary"
                   icon={SettingsIcon}
                   iconClassName="h-4 w-4 shrink-0"

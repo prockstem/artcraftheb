@@ -1,6 +1,7 @@
 import { useSignals } from "@preact/signals-react/runtime";
 import { AUTH_STATUS } from "~/enums";
 import { authentication } from "~/signals";
+import { useTranslation } from "@storyteller/common";
 // import ProfileDropdown from "./ProfileDropdown";
 
 export const AuthButtons = ({
@@ -9,6 +10,7 @@ export const AuthButtons = ({
   loginSignUpPressed: () => void;
 }) => {
   useSignals();
+  const { t } = useTranslation();
 
   const { status } = authentication;
 
@@ -24,7 +26,7 @@ export const AuthButtons = ({
               loginSignUpPressed();
             }}
           >
-            Login / Sign Up
+            {t("topbar.loginSignUp")}
           </button>
         </div>
       </>

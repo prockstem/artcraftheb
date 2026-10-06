@@ -6,6 +6,7 @@ import {
   useStoryboardPageEnabled,
 } from "@storyteller/ui-settings-modal";
 import { useTabStore, TabId } from "~/pages/Stores/TabState";
+import { isTranslationKey, useTranslation, type TranslateFn } from "@storyteller/common";
 
 export type AppId =
   | "IMAGE"
@@ -381,6 +382,7 @@ export const EDIT_APPS = ALL_APPS.filter((app) => app.category === "edit");
 
 export const useVisibleApps = (): FullAppItem[] => {
   const storyboardEnabled = useStoryboardPageEnabled();
+  const { t } = useTranslation();
   return useMemo(
     () =>
       ALL_APPS.filter((app) => {
@@ -388,10 +390,42 @@ export const useVisibleApps = (): FullAppItem[] => {
         if (app.action === "BACKGROUND_CHANGE") return false;
         if (app.action === "STORYBOARD") return storyboardEnabled;
         return true;
-      }),
-    [storyboardEnabled],
+      }).map((app) => ({
+        ...app,
+        label: translateOr(t, `apps.${app.id}.label`, app.label),
+        description: translateOr(
+          t,
+          `apps.${app.id}.description`,
+          app.description,
+        ),
+      })),
+    [storyboardEnabled, t],
   );
 };
+
+/** APP_DESCRIPTORS with labels and descriptions in the current language. */
+export const useLocalizedAppDescriptors = (): AppDescriptor[] => {
+  const { t } = useTranslation();
+  return useMemo(
+    () =>
+      APP_DESCRIPTORS.map((d) => ({
+        ...d,
+        label: translateOr(t, `appTabs.${d.id}.label`, d.label),
+        description:
+          d.description &&
+          translateOr(t, `appTabs.${d.id}.description`, d.description),
+      })),
+    [t],
+  );
+};
+
+export const getBadgeLabel = (t: TranslateFn, badge: string) =>
+  translateOr(t, `apps.badge.${badge}`, badge);
+
+// Falls back to the English source text for ids without a translation entry.
+function translateOr(t: TranslateFn, key: string, fallback: string): string {
+  return isTranslationKey(key) ? t(key) : fallback;
+}
 
 export const useGenerateApps = (): FullAppItem[] => {
   const visible = useVisibleApps();
